@@ -6,7 +6,7 @@ Simple node.js Librus scraping API module
 
 ## Installation:
 ```
-npm install librus-api
+npm install @rzymek/librus-api
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ client.authorize("login", "pass").then(function () {
   // List announcements
   client.inbox.listAnnouncements().then(data => {});
   
-  // List all e-mails in folder(6) in page(2)
-  client.inbox.listInbox(6, 2).then(data => {});
+  // List all e-mails in folder(5) in page(2)
+  client.inbox.listInbox(5).then(data => {});
   
   // Get message with id 2133726 in folder 6
   client.inbox.getMessage(6, 2133726).then(data => {});
