@@ -14,10 +14,10 @@ notifications ~ "you have a message", but not the content itself)
 
 1. `sudo npm install -g node-lambda`
 2. In AWS eu-west-1 (Ireland region):
-2.1. Create IAM user called `2017-12-librus` with ability to deploy&run AWS Lambda
-2.2. Create IAM role called `LambdaSendsEmails` to be used by our AWS Lambda
-code, allowing it to send emails
-2.3. Verify domain for Email receiving and sending in AWS SES
+	1. Create IAM user called `2017-12-librus` with ability to deploy&run AWS Lambda
+	2. Create IAM role called `LambdaSendsEmails` to be used by our AWS Lambda
+		code, allowing it to send emails
+	3. Verify domain for Email receiving and sending in AWS SES
 3. Create a local `deploy.env` file with secrets:
 ```
 LIBRUS_USER_NAME=1234567
