@@ -20,6 +20,11 @@ code, allowing it to send emails
 2.3. Verify domain for Email receiving and sending in AWS SES
 3. Create a local `deploy.env` file with secrets:
 ```
+LIBRUS_USER_NAME=1234567
+LIBRUS_PASSWORD=librus_is_really_crap
+
+EMAIL_FROM=make-sure-this-email-receives-notifications-from@librus.pl
+EMAIL_TO=your-real-email@gmail.com
 ```
 4. Test it locally with `node-lambda run -f deploy.env`
 5. Deploy it to AWS with `node-lambda deploy -f deploy.env`
