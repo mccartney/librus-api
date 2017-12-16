@@ -28,6 +28,7 @@ code, allowing it to send emails
 The MIT License (MIT)
 
 Copyright (c) 2015/2016 Mateusz Bagiński
+
 Copyright (c) 2017 Grzegorz Olędzki
 
 
