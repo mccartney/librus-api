@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 const util = require('util');
 
-const Librus = require("../librus-api");
+const Librus = require(".");
 
 var ses = new AWS.SES();
 
