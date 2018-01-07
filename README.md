@@ -13,12 +13,13 @@ notifications ~ "you have a message", but not the content itself)
 ## Installation:
 
 1. `sudo npm install -g node-lambda`
-2. In AWS eu-west-1 (Ireland region):
+2. `npm install`
+3. In AWS eu-west-1 (Ireland region):
 	1. Create IAM user called `2017-12-librus` with ability to deploy&run AWS Lambda
 	2. Create IAM role called `LambdaSendsEmails` to be used by our AWS Lambda
 		code, allowing it to send emails
 	3. Verify domain for Email receiving and sending in AWS SES
-3. Create a local `deploy.env` file with secrets:
+4. Create a local `deploy.env` file with secrets:
 ```
 LIBRUS_USER_NAME=1234567
 LIBRUS_PASSWORD=librus_is_really_crap
@@ -26,8 +27,8 @@ LIBRUS_PASSWORD=librus_is_really_crap
 EMAIL_FROM=make-sure-this-email-receives-notifications-from@librus.pl
 EMAIL_TO=your-real-email@gmail.com
 ```
-4. Test it locally with `node-lambda run -f deploy.env`
-5. Deploy it to AWS with `node-lambda deploy -f deploy.env`
+5. Test it locally with `node-lambda run -f deploy.env`
+6. Deploy it to AWS with `node-lambda deploy -f deploy.env`
 
 ## License
 The MIT License (MIT)
