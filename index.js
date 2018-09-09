@@ -36,6 +36,7 @@ function sendEmail(subject, content, event, context) {
 }
 
 function inspectMessage(msg, librus, event, context) {
+  console.log("Processing message " + util.inspect(msg));
   if (!msg.read) {
     librus.inbox.getMessage(5, msg.id).then(data => {
       var from = data.user+"("
@@ -51,9 +52,8 @@ exports.myHandler = function(event, context, callback) {
   let lib = new Librus();
   lib.authorize(process.env.LIBRUS_USER_NAME, process.env.LIBRUS_PASSWORD).then(function () {
     lib.inbox.listInbox(5).then( data => {
-    
       data.forEach(function(value) { return inspectMessage(value, lib, event, context)})
-   })   
+   })
   });
 
 }
