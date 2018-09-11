@@ -42,6 +42,7 @@ function inspectMessage(msg, librus, event, context) {
       var from = data.user+"("
       var fromFriendly = from.substring(0, from.indexOf('(')).trim()
       
+      console.log("Sending email about " + data.title);
       sendEmail("Librus ("+fromFriendly+"): " + data.title, data.html, event, context)
     });
   }
