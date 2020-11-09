@@ -28,7 +28,7 @@ EMAIL_FROM=make-sure-this-email-receives-notifications-from@librus.pl
 EMAIL_TO=your-real-email@gmail.com
 ```
 5. Test it locally with `node-lambda run -f deploy.env`
-6. Deploy it to AWS with `node-lambda deploy -f deploy.env`
+6. Deploy it to AWS with `node-lambda deploy -f deploy.env --environment rodzice --functionName=librus-notify-with-email`
 
 ## License
 The MIT License (MIT)
