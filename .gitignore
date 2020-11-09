@@ -3,4 +3,4 @@ node_modules/
 !.env
 !.gitignore
 *.log
-deploy.env
+deploy*.env
