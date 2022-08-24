@@ -1,7 +1,7 @@
 {
-  "name": "@rzymek/librus-api",
-  "version": "2.2.1",
-  "description": "Piping Librus messages to email",
+  "name": "librus-api",
+  "version": "2.5.0",
+  "description": "Simple synergia.librus.pl site scraping API",
   "private": false,
   "main": "lib/api.js",
   "scripts": {
@@ -15,14 +15,12 @@
     "librus",
     "api"
   ],
-  "author": "Mateusz Bagiński, Krzysztof Rzymkowski, Grzegorz Olędzki",
+  "author": "Mateusz Bagiński, Krzysztof Rzymkowski",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.788.0",
     "cheerio": "^0.22.0",
-    "lodash": "^3.10.1",
-    "node-lambda": "^0.14.0",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "lodash": "^4.17.15",
+    "request": "^2.34",
+    "request-promise": "^4.2.2"
   }
 }
