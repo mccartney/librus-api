@@ -18,6 +18,7 @@
   "author": "Mateusz Bagiński, Krzysztof Rzymkowski",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.788.0",
     "cheerio": "^0.22.0",
     "lodash": "^4.17.15",
     "request": "^2.34",
