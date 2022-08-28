@@ -4,3 +4,4 @@ node_modules/
 !.gitignore
 *.log
 deploy*.env
+test.js

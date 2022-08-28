@@ -23,7 +23,6 @@ notifications ~ "you have a message", but not the content itself)
 ```
 LIBRUS_USER_NAME=1234567
 LIBRUS_PASSWORD=librus_is_really_crap
-
 EMAIL_FROM=make-sure-this-email-receives-notifications-from@librus.pl
 EMAIL_TO=your-real-email@gmail.com
 ```
@@ -33,11 +32,9 @@ EMAIL_TO=your-real-email@gmail.com
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015/2016 Mateusz Bagiński
-
-Copyright (c) 2017 Grzegorz Olędzki
-
-
+Copyright (c) 2020/2021 Mateusz Bagiński
+Copyright (c) Krzysztof Rzymkowski
+Copyright (c) 2017-2022 Grzegorz Olędzki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
