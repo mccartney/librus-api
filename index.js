@@ -25,11 +25,12 @@ function sendEmail(subject, content, event, context) {
          },
          Source: process.env.EMAIL_FROM
    }
-   
-   ses.sendEmail(params, 
+
+   ses.sendEmail(params,
          function(err, data) {
-           if(err) console.log(err);
+           if(err) console.log("SES sendEmail error for '" + subject + "': " + err);
            else {
+             console.log("SES sendEmail OK for '" + subject + "'");
              context.succeed(event)
            }
          })
@@ -41,20 +42,97 @@ function inspectMessage(msg, librus, event, context) {
     librus.inbox.getMessage(5, msg.id).then(data => {
       var from = data.user+"("
       var fromFriendly = from.substring(0, from.indexOf('(')).trim()
-      
+
       console.log("Sending email about " + data.title);
       sendEmail("Librus ("+fromFriendly+"): " + data.title, data.html, event, context)
     });
   }
 }
 
+/**
+ * Emits one email per unread announcement. Each announcement is rendered
+ * into its own SES call — never combined — even though Librus serves them
+ * on a single /ogloszenia page.
+ */
+function inspectAnnouncement(ann, event, context) {
+  console.log("Processing announcement " + util.inspect({
+      title: ann && ann.title
+    , user: ann && ann.user
+    , date: ann && ann.date
+    , read: ann && ann.read
+    , contentLength: (ann && ann.content || "").length
+  }));
+  if (!ann) {
+    console.log("Announcement is null/undefined, skipping");
+    return;
+  }
+  if (ann.read) {
+    return;
+  }
+  try {
+    var user = ann.user || "?";
+    var title = ann.title || "(bez tytułu)";
+    var subject = "Librus ogłoszenie (" + user + "): " + title;
+    var body = (ann.html || ann.content || "")
+      + "<br/><br/>-- <br/>Opublikowano: " + (ann.date || "?")
+      + "<br/>Dodał: " + user;
+    console.log("Sending email about announcement '" + title + "' (date " + (ann.date || "?") + ")");
+    sendEmail(subject, body, event, context);
+  } catch (err) {
+    console.log("inspectAnnouncement error for '" + (ann && ann.title) + "': "
+      + (err && err.stack || err));
+  }
+}
+
+function handleInbox(lib, event, context) {
+  return lib.inbox.listInbox(5)
+    .then(data => {
+      var total = data ? data.length : 0;
+      var unread = data ? data.filter(function(m) { return m && !m.read; }).length : 0;
+      console.log("Inbox: fetched " + total + " messages (" + unread + " unread)");
+      if (!data) return;
+      data.forEach(function(value) { return inspectMessage(value, lib, event, context); });
+    })
+    .catch(err => {
+      console.log("Inbox flow failed: " + (err && err.stack || err));
+    });
+}
+
+function handleAnnouncements(lib, event, context) {
+  if (!lib.announcements || typeof lib.announcements.listAnnouncements !== "function") {
+    console.log("Announcements module not loaded, skipping");
+    return Promise.resolve();
+  }
+  return lib.announcements.listAnnouncements()
+    .then(data => {
+      var total = data ? data.length : 0;
+      var unread = data ? data.filter(function(a) { return a && !a.read; }).length : 0;
+      console.log("Announcements: fetched " + total + " (" + unread + " unread)");
+      if (!data || !data.length) return;
+      data.forEach(function(a) {
+        try {
+          inspectAnnouncement(a, event, context);
+        } catch (err) {
+          console.log("Announcement processing error for '"
+            + (a && a.title) + "': " + (err && err.stack || err));
+        }
+      });
+    })
+    .catch(err => {
+      console.log("Announcements flow failed (inbox flow is independent, so messages "
+        + "should still be delivered): " + (err && err.stack || err));
+    });
+}
 
 exports.myHandler = function(event, context, callback) {
   let lib = new Librus();
   lib.authorize(process.env.LIBRUS_USER_NAME, process.env.LIBRUS_PASSWORD).then(function () {
-    lib.inbox.listInbox(5).then( data => {
-      data.forEach(function(value) { return inspectMessage(value, lib, event, context)})
-   })
+    // Inbox and announcements are deliberately independent: a failure in one
+    // must not prevent the other from running. Each has its own .catch().
+    handleInbox(lib, event, context);
+    handleAnnouncements(lib, event, context);
+  }).catch(err => {
+    console.log("Authorize failed: " + (err && err.stack || err));
   });
 
 }
