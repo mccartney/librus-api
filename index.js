@@ -127,10 +127,12 @@ function handleAnnouncements(lib, event, context) {
 exports.myHandler = function(event, context, callback) {
   let lib = new Librus();
   lib.authorize(process.env.LIBRUS_USER_NAME, process.env.LIBRUS_PASSWORD).then(function () {
-    // Inbox and announcements are deliberately independent: a failure in one
-    // must not prevent the other from running. Each has its own .catch().
-    handleInbox(lib, event, context);
-    handleAnnouncements(lib, event, context);
+    // Sequence inbox before announcements so logs appear in a stable order:
+    // wiadomości → menu-bar dump (emitted by the announcements parser on the
+    // /ogloszenia response) → ogłoszenia rows. Each handler swallows its own
+    // errors, so a failing inbox still lets announcements run.
+    return handleInbox(lib, event, context)
+      .then(() => handleAnnouncements(lib, event, context));
   }).catch(err => {
     console.log("Authorize failed: " + (err && err.stack || err));
   });
